@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # send-flow
 
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Express, and more.
@@ -69,3 +70,6 @@ send-flow/
 - `npm run check-types`: Check TypeScript types across all apps
 - `npm run db:push`: Push schema changes to database
 - `npm run db:studio`: Open database studio UI
+=======
+# Send-Flow
+>>>>>>> 38b2a596407f2696ef4ddc2da6122275fa05dbf2
