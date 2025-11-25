@@ -19,12 +19,13 @@
     "db:migrate": "turbo -F @send-flow/db db:migrate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "dotenv": "^17.2.2",
-    "zod": "^4.1.11"
+    "zod": "^4.1.13"
   },
   "devDependencies": {
-    "turbo": "^2.5.4",
-    "@types/node": "^22.13.11"
+    "@types/node": "^22.13.11",
+    "turbo": "^2.5.4"
   },
   "packageManager": "npm@10.9.3"
 }
