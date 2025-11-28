@@ -7,7 +7,8 @@ import authRouter from "./routes/auth.routes";
 const app = express();
 
 app.use(cors({
-    origin: "*",            // ⬅ Allow requests from any domain
+    origin: "http://localhost:3001",  // ⭐ REQUIRED
+  credentials: true,            // ⬅ Allow requests from any domain
     methods: ["GET", "POST", "OPTIONS"],
 }));
 
