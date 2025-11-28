@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { signUpSchema, type SignUpValues } from "@send-flow/validation";
+import { useSignUp } from "@/hooks/useSignUp";
 
 export default function SignUpPage() {
 
@@ -20,8 +21,9 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
   });
 
-  function onSubmit(data: SignUpValues) {
-    console.log("FORM DATA:", data);
+  const { mutate: signup, isPending } = useSignUp();
+function onSubmit(data: SignUpValues) {
+    signup(data); // data = { userName, email, password } ✔
   }
 
   return (
@@ -57,17 +59,17 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
           <div>
-            <Label className="text-sm font-medium text-gray-700">Full Name</Label>
+            <Label className="text-sm font-medium text-gray-700">Username</Label>
             <Input
-              {...register("fullName")}
-              placeholder="Enter your full name"
+              {...register("userName")}
+              placeholder="Enter your username"
               className="mt-1 rounded-2xl border-gray-300
               focus-visible:ring-2 focus-visible:ring-indigo-300 
               focus-visible:border-indigo-400"
             />
-            {errors.fullName && (
+            {errors.userName && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.fullName.message}
+                {errors.userName.message}
               </p>
             )}
           </div>

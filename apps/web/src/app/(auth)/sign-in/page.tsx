@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,10 +11,11 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { signInSchema, type SignInValues } from "@send-flow/validation";
-
+import { useSignIn } from "@/hooks/useSignIn";
 
 
 export default function SignInPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,9 +24,16 @@ export default function SignInPage() {
     resolver: zodResolver(signInSchema),
   });
 
+const { mutate: signIn, status } = useSignIn({
+  onSuccess: (_data, _variables, _onMutateResult, _context) => {
+    router.push("/dashboard"); // redirect
+  },
+});
+  
   function onSubmit(data: SignInValues) {
-    console.log("SIGN IN DATA:", data);
+    signIn(data); // 🚀 Send request
   }
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#eef2ff] px-4">
