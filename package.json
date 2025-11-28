@@ -19,12 +19,20 @@
     "db:migrate": "turbo -F @send-flow/db db:migrate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-query": "^5.90.11",
     "dotenv": "^17.2.2",
-    "zod": "^4.1.11"
+    "google-auth-library": "^10.5.0",
+    "nodemailer": "^7.0.11",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
-    "turbo": "^2.5.4",
-    "@types/node": "^22.13.11"
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.13.11",
+    "@types/nodemailer": "^7.0.4",
+    "turbo": "^2.5.4"
   },
   "packageManager": "npm@10.9.3"
 }

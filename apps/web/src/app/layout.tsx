@@ -17,38 +17,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "send-flow",
-	description: "send-flow",
+  title: "send-flow",
+  description: "send-flow",
 };
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-	  <Providers>
-		 <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <Sidebar />
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Providers>
+          <div className="flex min-h-screen">
+            {/* Sidebar */}
+            <Sidebar />
 
-      {/* Right section: Navbar + Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Navbar at top */}
-        <Navbar />
+            {/* Right section: Navbar + Content */}
+            <div className="flex-1 flex flex-col">
+              {/* Navbar at top */}
+              <Navbar />
 
-        {/* Main content */}
-       <main className="flex-1 overflow-auto p-6 flex items-center justify-center h-full mb-22">
-  {children}
-</main>
-      </div>
-    </div>
+              {/* Main content */}
+              <main className="flex-1 overflow-auto p-6 flex items-center justify-center h-full mb-22">
+                {children}
+              </main>
+            </div>
+          </div>
         </Providers>
-			</body>
-		</html>
-	);
+      </body>
+    </html>
+  );
 }
