@@ -8,7 +8,7 @@ import {
   signin as signinService, 
   googleAuth as googleAuthService, 
   verifyEmailService 
-} from "@/services/auth.service";
+} from "@/services/auth/auth.service";
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "");
 
