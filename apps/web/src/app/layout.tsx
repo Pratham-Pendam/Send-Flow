@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 // @ts-ignore: allow side-effect CSS import without type declarations
 import "../index.css";
+import '@xyflow/react/dist/style.css';
 import Providers from "@/components/providers";
 import Sidebar from "@/components/sidebar";
 import  Navbar  from "@/components/navbar";
@@ -37,12 +38,12 @@ export default function RootLayout({
             <Sidebar />
 
             {/* Right section: Navbar + Content */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col min-h-0">
               {/* Navbar at top */}
               <Navbar />
 
               {/* Main content */}
-              <main className="flex-1 overflow-auto p-6 flex items-center justify-center h-full mb-22">
+              <main className="flex-1 overflow-hidden h-full">
                 {children}
               </main>
             </div>

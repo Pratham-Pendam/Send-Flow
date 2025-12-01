@@ -1,4 +1,4 @@
-import { googleAuth, refreshToken, signin, signup, verifyEmail } from "@/controllers/auth.controller";
+import { googleAuth, refreshToken, signin, signup, verifyEmail } from "@/controllers/auth/auth.controller";
 import express from "express";
 // import { authGuard } from "@/middlewares/authGuard";
 
