@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
 	return (
-    <div className="flex flex-col items-center justify-center text-center ">
+    <div className="flex flex-col items-center justify-center text-center mt-20 ">
       
       {/* Headline */}
     <h1 className="text-5xl  font-extrabold leading-tight text-center text-gray-900">
