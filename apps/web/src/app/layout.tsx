@@ -6,6 +6,7 @@ import '@xyflow/react/dist/style.css';
 import Providers from "@/components/providers";
 import Sidebar from "@/components/sidebar";
 import  Navbar  from "@/components/navbar";
+import AuthInitWrapper from "@/components/AuthInitWrapper";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -32,6 +33,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+                <AuthInitWrapper />
+
         <Providers>
           <div className="flex min-h-screen">
             {/* Sidebar */}

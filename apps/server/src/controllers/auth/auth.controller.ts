@@ -7,7 +7,8 @@ import {
   signup as signupService, 
   signin as signinService, 
   googleAuth as googleAuthService, 
-  verifyEmailService 
+  verifyEmailService, 
+  getMeService
 } from "@/services/auth/auth.service";
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || "");
@@ -21,9 +22,9 @@ export const signup = async (req: Request, res: Response): Promise<Response> => 
     const data = signUpSchema.parse(req.body);
     const user = await signupService(data);
 
-    const accessToken = sendTokens(res, user.id); // refresh cookie + access token
+    sendTokens(res, user.id); // refresh cookie + access token
 
-    return sendResponse(res, 201, "Signup successful", { user, accessToken });
+    return sendResponse(res, 201, "Signup successful", { user });
   } catch (err: any) {
     return sendResponse(res, 400, "Signup failed", null, err.errors ?? err.message);
   }
@@ -34,9 +35,9 @@ export const signin = async (req: Request, res: Response): Promise<Response> => 
     const data = signInSchema.parse(req.body);
     const user = await signinService(data);
 
-    const accessToken = sendTokens(res, user.id);
+    sendTokens(res, user.id);
 
-    return sendResponse(res, 200, "Signin successful", { user, accessToken });
+    return sendResponse(res, 200, "Signin successful", { user });
   } catch (err: any) {
     return sendResponse(res, 400, "Signin failed", null, err.errors ?? err.message);
   }
@@ -59,8 +60,8 @@ export const googleAuth = async (req: Request, res: Response): Promise<Response>
       name: payload.name ?? payload.given_name ?? "New User"
     });
 
-    const accessToken = sendTokens(res, user.id);
-    return sendResponse(res, 200, "Google login successful", { user, accessToken });
+    sendTokens(res, user.id);
+    return sendResponse(res, 200, "Google login successful", { user });
   } catch (err: any) {
     return sendResponse(res, 400, "Google login failed", null, err.message);
   }
@@ -74,6 +75,23 @@ export const refreshToken = async (req: Request, res: Response): Promise<Respons
     return sendResponse(res, 200, "Token refreshed", { accessToken });
   } catch (err: any) {
     return sendResponse(res, 401, "Invalid refresh token");
+  }
+};
+
+export const getMeController = async (req:Request, res:Response) => {
+  try {
+    const userId = req.userId; // Extracted from authGuard middleware
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await getMeService(userId);
+
+    return res.json({ user });
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+    return res.status(500).json({ message: errorMessage });
   }
 };
 

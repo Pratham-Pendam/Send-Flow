@@ -30,9 +30,9 @@ export function useSignIn(
     ...options,
     onSuccess: (res, variables, context, mutation) => {
       const user = (res as any)?.user ?? (res as any)?.data?.user;
-      const accessToken = (res as any)?.accessToken ?? (res as any)?.data?.accessToken;
-      if (user && accessToken) {
-        setAuth(user, accessToken); // store in Zustand
+      const token = (res as any)?.accessToken ?? (res as any)?.data?.accessToken;
+      if (user) {
+        setAuth(user, token || "");
       }
       options?.onSuccess?.(res, variables, context, mutation);
     },
