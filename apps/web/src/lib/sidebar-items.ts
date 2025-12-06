@@ -15,7 +15,7 @@ export const sidebarItems: SidebarItem[] = [
     {
     name: "WorkFlows",
     icon: Workflow,
-    path: "/workflows"
+    path: "/workflow"
   }
    
 ]

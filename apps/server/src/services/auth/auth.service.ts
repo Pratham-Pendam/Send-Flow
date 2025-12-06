@@ -91,6 +91,23 @@ export const googleAuth = async (
 };
 
 
+export const getMeService = async (userId: string) => {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      email: true,
+      userName: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user;
+};
+
 export const verifyEmailService = async (token: string): Promise<string> => {
   try {
     const decoded = jwt.verify(

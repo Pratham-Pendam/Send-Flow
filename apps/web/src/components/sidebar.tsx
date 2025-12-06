@@ -5,15 +5,26 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Send, ChevronDown } from "lucide-react"; // Example icon — replace with your logo
+import { useWorkflows } from "@/hooks/useWorkflows";
+import { useWorkflowStore } from "@/store/workflow.store";
 
 export default function Sidebar() {
   const [expand, setExpand] = useState(false);
   const [workflowsOpen, setWorkflowsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Auto-open workflows accordion when on workflows routes
+const { workflows, setWorkflows } = useWorkflowStore();
+
+const { data, isLoading } = useWorkflows();
+
+useEffect(() => {
+  if (data) {
+    setWorkflows(data);
+  }
+}, [data]);
+  // Auto-open workflows accordion when on workflow routes
   useEffect(() => {
-    if (pathname.startsWith("/workflows") || pathname.startsWith("/workflow")) {
+    if (pathname.startsWith("/workflow")) {
       setWorkflowsOpen(true);
     }
   }, [pathname]);
@@ -21,9 +32,9 @@ export default function Sidebar() {
   const isActive = (item: SidebarItem) => {
     // Exact match for dashboard
     if (item.path === "/dashboard") return pathname === "/dashboard";
-    // Handle dynamic workflows path like /workflows/:id
-    if (item.path.startsWith("/workflows") || item.path.startsWith("/workflow")) {
-      return pathname.startsWith("/workflows") || pathname.startsWith("/workflow");
+    // Handle dynamic workflow path like /workflow/:id
+    if (item.path.startsWith("/workflow")) {
+      return pathname.startsWith("/workflow");
     }
     return pathname === item.path;
   };
@@ -47,69 +58,74 @@ export default function Sidebar() {
       </div>
 
       {/* === Sidebar Items === */}
-      <ul className="flex flex-col gap-1 mt-2 px-2">
+      <ul className="flex flex-col gap-1 mt-2 rounded-xl  px-2">
         {sidebarItems.map((item: SidebarItem, index: number) => {
           const Icon = item.icon;
           const active = isActive(item);
           const isWorkflows = item.name.toLowerCase().includes("workflow");
           return (
             <li key={index}>
-              <Link
-                href={item.path as any}
-                className={
-                  `flex items-center gap-3 p-2 rounded-lg transition ` +
-                  (active
-                    ? "bg-indigo-100 text-foreground font-medium ring-1 ring-indigo-200"
-                    : "hover:bg-indigo-100/70")
-                }
-              >
-                <Icon className="w-5 h-5 flex-shrink-0" />
-                {expand && (
-                  <>
-                    <span className="flex-1 text-left">{item.name}</span>
-                    {isWorkflows && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setWorkflowsOpen((v) => !v);
-                        }}
-                        className="ml-auto p-1 rounded hover:bg-indigo-100"
-                        aria-label="Toggle workflows menu"
-                      >
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform ${workflowsOpen ? "rotate-180" : "rotate-0"}`}
-                        />
-                      </button>
-                    )}
-                  </>
-                )}
-              </Link>
-              {/* Accordion content for Workflows (add links once routes are confirmed) */}
-              {isWorkflows && workflowsOpen && expand && (
-                <div className="ml-10 mt-1 mb-2 space-y-1 text-sm">
-                  {/* <Link
-                    href={"/workflows" as any}
-                    className={
-                      `block px-2 py-1 rounded hover:bg-indigo-100 ` +
-                      (pathname === "/workflows" ? "bg-indigo-200 font-medium" : "")
-                    }
-                  >
-                    All Workflows
-                  </Link>
-                  <Link
-                    href={"/workflows/new" as any}
-                    className={
-                      `block px-2 py-1 rounded hover:bg-indigo-100 ` +
-                      (pathname === "/workflows/new" ? "bg-indigo-200 font-medium" : "")
-                    }
-                  >
-                    Create Workflow
-                  </Link> */}
-                </div>
-              )}
-            </li>
+  {isWorkflows ? (
+    // -------- Workflows item (NO NAVIGATION) --------
+    <button
+      type="button"
+      onClick={() => setWorkflowsOpen((v) => !v)}
+      className={
+        `flex w-full items-center gap-3 p-2 rounded-lg transition ` +
+        (active
+          ? "bg-indigo-100 text-foreground rounded-xl font-medium ring-1 ring-indigo-200"
+          : "hover:bg-indigo-100/70")
+      }
+    >
+      <Icon className="w-5 h-5 flex-shrink-0" />
+      {expand && (
+        <>
+          <span className="flex-1 text-left">{item.name}</span>
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${
+              workflowsOpen ? "rotate-180" : "rotate-0"
+            }`}
+          />
+        </>
+      )}
+    </button>
+  ) : (
+    // -------- Normal navigation item (Dashboard) --------
+    <Link
+      href={item.path as any}
+      className={
+        `flex items-center gap-3 p-2 rounded-lg transition ` +
+        (active
+          ? "bg-indigo-100 text-foreground font-medium ring-1 ring-indigo-200"
+          : "hover:bg-indigo-100/70")
+      }
+    >
+      <Icon className="w-5 h-5 rounded-xl flex-shrink-0" />
+      {expand && <span className="flex-1 text-left">{item.name}</span>}
+    </Link>
+  )}
+
+  {/* Accordion content */}
+  {isWorkflows && workflowsOpen && expand && (
+    <div className="ml-10 mt-1 mb-2 space-y-1 text-sm">
+      {isLoading && <p className="text-xs text-gray-500">Loading...</p>}
+      {workflows?.map((wf: any) => (
+        <Link
+          key={wf.id}
+          href={`/workflow/${wf.id}`}
+          className={`block px-2 py-1 rounded hover:bg-indigo-100 ${
+            pathname === `/workflow/${wf.id}`
+              ? "bg-indigo-200 font-medium"
+              : ""
+          }`}
+        >
+          {wf.name}
+        </Link>
+      ))}
+    </div>
+  )}
+</li>
+
           );
         })}
       </ul>
